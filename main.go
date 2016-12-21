@@ -1,11 +1,11 @@
 package main
 
 import (
-	"github.bus.zalan.do/zbider/home"
-	"github.bus.zalan.do/zbider/routes"
-	"github.bus.zalan.do/zbider/search"
 	log "github.com/Sirupsen/logrus"
 	"github.com/codegangsta/cli"
+	"github.com/mohabusama/zbider/home"
+	"github.com/mohabusama/zbider/routes"
+	"github.com/mohabusama/zbider/search"
 	"net/http"
 	"os"
 )

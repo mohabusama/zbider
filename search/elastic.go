@@ -26,6 +26,9 @@ func getElasticClient(es_url string) (*elastic.Client, error) {
 	}
 
 	ping, _, err := client.Ping(es_url).Do(context.TODO())
+	if err != nil {
+		return nil, err
+	}
 
 	log.Info(ping.ClusterName)
 
