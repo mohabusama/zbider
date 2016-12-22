@@ -1,43 +1,42 @@
 import { Component } from '@angular/core';
+import { OnInit } from '@angular/core';
+
+import { Result } from './result.model'
+
+import { SearchService } from './search.service'
+
 
 export class User {
     id: number;
     name: string;
 }
 
-export class Result {
-    score: number;
-    zbider_type: string;
-    data: Object
-}
-
-const RESULTS: Result[] = [
-    {score: 0.1, zbider_type: 'zbider-user', data: {link: 'https://www.google.de', title: 'T 0.1', description: 'lorem'}},
-    {score: 0.12, zbider_type: 'zbider-user', data: {link: 'https://www.google.de', title: 'T 0.12', description: 'lorem'}}
-]
-
 @Component({
     selector: 'my-app',
+    providers: [SearchService],
     template: `
         <md-toolbar [color]="myColor">
-            <span>ZBIDER</span>
+            <span></span>
 
             <md-input [(ngModel)]="query"></md-input>
             <button md-button (click)="Search()"><md-icon>search</md-icon></button>
 
         </md-toolbar>
-        <md-card *ngIf="results.length === 0">
-            <md-card-content>No search results</md-card-content>
+        <md-card *ngIf="result.results.length === 0">
+            <md-card-content><h3>No search results</h3></md-card-content>
         </md-card>
-        <md-card *ngFor="let res of results">
-            <md-card-title>{{res.data.title}}</md-card-title>
+        <md-card *ngFor="let res of result.results">
+            <md-card-title>
+                <a href="{{res.data.zbider_fields.link}}" target="_blank">
+                {{res.data.zbider_fields.title}}
+                </a>
+            </md-card-title>
             <md-card-content>
                 <p>
-                    {{res.data.description}}
+                    {{res.data.zbider_fields.text}}
                 </p>
             </md-card-content>
         </md-card>
-        <md-input [(ngModel)]="user.name"></md-input>
    `,
 })
 export class AppComponent  {
@@ -47,10 +46,23 @@ export class AppComponent  {
         name: "ZBIDER USER"
     };
 
-    results = RESULTS;
-    // results = [];
+    result: Result = {
+        total_hits: 0,
+        took: 0.0,
+        results: []
+    };
+
+    constructor(private searchService: SearchService) {}
+
+    ngOnInit(): void {}
 
     Search(): void {
-        console.log(this.query);
+        this
+            .searchService
+            .search(this.query)
+            .then((res) => {
+                console.log(res);
+                this.result = res;
+            });
     }
 }

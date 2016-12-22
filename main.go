@@ -63,7 +63,7 @@ func main() {
 		searchService := search.NewService(elasticsearch, elasticsearch_index)
 
 		log.Debug("Registering router")
-		router := routes.GetRouter(homeService, searchService)
+		router := routes.GetRouter(searchService, homeService)
 
 		log.Infof("Starting %s server: %s", app.Name, bindAddress)
 		log.Fatal(http.ListenAndServe(bindAddress, router))

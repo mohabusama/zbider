@@ -12,3 +12,5 @@ ui/e2e/**/*.js
 ui/e2e/**/*.js.map
 _test-output
 _temp
+
+ui/dist
